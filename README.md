@@ -14,7 +14,7 @@
 
 ---
 
-## 🔊 Overview
+## Overview
 
 This project implements a **Dual-Tone Multi-Frequency (DTMF) Decoder** embedded system using an ARM Cortex-M microcontroller. The decoder interprets standard tone combinations used in telecommunication keypads and displays results in real time on an LCD.
 
@@ -22,7 +22,7 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 
 ---
 
-## ⚙️ System Features
+## ⚙System Features
 
 - Real-time audio signal capture and tone detection via **ADC**
 - Decoding of DTMF signals using **Goertzel algorithm**
@@ -34,9 +34,9 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 
 ---
 
-## 🧩 Technical Breakdown
+## Technical Breakdown
 
-### ✅ Functional Requirements Addressed
+### Functional Requirements Addressed
 - Decode DTMF inputs in real-time
 - Display results clearly via LCD interface
 - System configuration through digital input pins
@@ -44,7 +44,7 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 - Robust operation across varied tone quality
 - Persistent configuration via EEPROM
 
-### 🛠️ Implementation Details
+### 🛠Implementation Details
 - Written in **C/C++** and compiled with **ARM MDK (Keil µVision)**
 - Modular source split into `drivers`, `include`, and `src` folders
 - LCD handled using custom `lcd.c` driver
@@ -52,7 +52,7 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 - EEPROM used to store display mode (scrolling vs single-character)
 - Clear documentation provided using **Doxygen**
 
-### 🔍 Core Components
+### Core Components
 
 #### Signal Processing – `Sampler.c`
 - Audio signal buffering and preprocessing
@@ -80,7 +80,7 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 
 ---
 
-## 🧪 Testing & Evaluation
+## Testing & Evaluation
 
 Test procedures involved:
 - **Pure tone decoding** via signal generator
@@ -90,12 +90,12 @@ Test procedures involved:
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```bash
 DTMF_Decoder/
 ├── code/
-│   ├── trunk/                     # 📌 Main implementation folder
+│   ├── trunk/                     # Main implementation folder
 │   │   ├── src/                  # C source files
 │   │   ├── include/              # Header files
 │   │   ├── drivers/              # LCD, ADC, and system drivers
@@ -109,14 +109,14 @@ DTMF_Decoder/
 │   ├── scaling/                  # Contribution breakdowns
 │   └── feedback/                 # Assessment feedback
 ├── test/                         # Experimental and discarded tests
-├── Demo.mp4                      # 🎥 Video demonstration
-├── LICENSE                       # 📜 Custom license
-├── README.md                     # 📘 This file
+├── Demo.mp4                      # Video demonstration
+├── LICENSE                       # Custom license
+├── README.md                     # This file
 ```
 
 ---
 
-## 📦 Setup
+## Setup
 
 ### Requirements
 - Keil MDK ARM (v5.38a or later)
@@ -135,7 +135,7 @@ DTMF_Decoder/
 
 ---
 
-## 🔒 License
+## License
 
 This was a **collaborative group project**.
 
@@ -148,7 +148,7 @@ Refer to the [`LICENSE`](LICENSE) file for the full statement.
 
 ---
 
-## 📬 Contact
+## Contact
 
 > - Graham Pellegrini — graham.pellegrini@um.edu.mt
 > - Luca Vella — Luca.Vella.22@um.edu.mt
