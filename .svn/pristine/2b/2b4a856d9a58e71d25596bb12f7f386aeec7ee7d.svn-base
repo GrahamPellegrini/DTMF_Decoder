@@ -1,0 +1,44 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Agenda -- Group 5}
+\author{Location: 0 B 6}
+\date{8 May 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Chair:}   & Matthew Mifsud \\
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+
+\item Reading and approval of minutes from previous meeting
+
+\item Matters arising from minutes
+
+\item Progress report from group members
+
+\item Discuss what is the most suitable to be defined as an error state and how this will be shown to the user.
+
+\item Discuss how to better arrange the module structure of the code written.
+
+\item Discuss any inefficient or unreadable code and come up with possible solutions to improve it.
+
+\item Discuss how previous bugs were fixed (auto-scroll and Goertzel), as well as, how memory persistence was done.
+
+\item Discuss how DoxyGen will be used to document the program code.
+
+\item Discuss how the final design brief should be put together.
+
+% Add other items here as necessary
+
+\item Other matters
+
+\end{enumerate}
+
+\end{document}

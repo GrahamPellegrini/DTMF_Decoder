@@ -1,0 +1,191 @@
+#include <platform.h>
+#include <adc.h>
+#include <stdio.h>
+#include "lcd.h"
+#include "leds.h"
+#include <timer.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include "delay.h"
+#include "switches.h"
+#include <time.h>
+ 
+#include <stdlib.h> // Required for rand() and srand()
+
+#define BUFFER_SIZE 32
+
+#define SAMPLE_RATE 500
+
+int buffer1[BUFFER_SIZE];
+
+int buffer2[BUFFER_SIZE];
+
+char secondRowOutput[BUFFER_SIZE / 2 + 1];
+
+int secondRowPosition = 0;
+
+int *currentBuffer = buffer1;
+
+unsigned int currentBufferPosition = 0;
+
+unsigned int cursorPosition = 0;
+
+bool isBufferFull = false;
+
+bool autoScroll = false;
+
+char decodedResult = '\0';
+
+void samplingInterrupt(void);
+
+void detectSwitchInput(void);
+
+char getMockDecodedResult(void);
+
+int main(void)
+{
+
+	adc_init();
+	lcd_init();
+	leds_init();
+	switches_init();
+	lcd_clear();
+	lcd_print("DTMF Decoder");
+	delay_ms(1000);
+	lcd_clear();
+
+	timer_init(CLK_FREQ / SAMPLE_RATE);
+	timer_set_callback(&samplingInterrupt);
+	timer_enable();
+
+	while (1)
+	{		
+		detectSwitchInput();
+		
+		if (cursorPosition == 16){lcd_set_cursor(0, 1);}
+		
+		if (isBufferFull)
+		{
+				
+			// int *decodingBuffer = currentBuffer;
+				
+			if (currentBuffer == buffer1)
+			{
+				currentBuffer = buffer2;
+			}
+			else
+			{
+				currentBuffer = buffer1;
+			}
+
+			isBufferFull = false;
+			
+			
+			// Goertzel Algorithm using contents of decodingBuffer
+			decodedResult = getMockDecodedResult(); // After mapping frequencies a character should be returned
+
+			if (cursorPosition == 33)
+			{
+				if (autoScroll)
+				{
+					lcd_clear();
+					cursorPosition = 0;
+					lcd_print(secondRowOutput);
+					cursorPosition = 16;
+				}
+			}
+			else
+			{
+				lcd_put_char(decodedResult);
+				cursorPosition++;
+			}
+			
+			if (cursorPosition > 16 && cursorPosition < 33)
+			{
+				secondRowOutput[secondRowPosition] = decodedResult;
+				secondRowPosition++;
+			}
+			else if (cursorPosition == BUFFER_SIZE + 1)
+			{
+				secondRowOutput[16] = '\0';
+				secondRowPosition = 0;
+			}
+		}
+	}
+}
+
+void samplingInterrupt()
+{
+	const int res = adc_read();
+
+	if (currentBufferPosition >= BUFFER_SIZE)
+	{
+		isBufferFull = true;
+		currentBufferPosition = 0;
+		return;
+	}
+
+	if (currentBuffer == buffer1)
+	{
+		buffer1[currentBufferPosition] = res;
+	}
+	else
+	{
+		buffer2[currentBufferPosition] = res;
+	}
+
+	currentBufferPosition++;
+}
+
+void detectSwitchInput()
+{
+	//light_leds();
+	if (switch_get(P_SW_UP))
+	{
+		
+		if (!autoScroll)
+		{
+			leds_set(0,0,1);
+			autoScroll = true;
+		}
+		else
+		{
+			leds_set(0,0,0);
+			autoScroll = false;
+		}
+		
+		delay_ms(500); // Debounce delay
+	}
+	else if (switch_get(P_SW_CR))
+	{
+		leds_set(0,1,0);
+		lcd_clear();
+		cursorPosition = 0;
+		if(autoScroll){
+			leds_set(0,0,1);
+		}else{
+			leds_set(0,0,0);
+		}
+		
+	}
+	else if (switch_get(P_SW_DN))
+	{
+		exit(0);
+	}
+	else if (switch_get(P_SW_LT))
+	{
+		exit(0);
+	}
+	else if (switch_get(P_SW_RT))
+	{
+		exit(0);
+	}
+}
+
+
+char getMockDecodedResult()
+{
+	const char pi_digits[] = "31415926535897932384626433832795";
+	int index = rand() % 32;
+	return pi_digits[index];
+}

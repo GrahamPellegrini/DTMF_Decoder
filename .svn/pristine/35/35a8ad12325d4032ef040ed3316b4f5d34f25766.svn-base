@@ -1,0 +1,31 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id: agenda_template.tex 7640 2024-02-21 08:19:14Z jbri2 $
+
+% Meeting details
+\title{Meeting Agenda -- Group 5}
+\author{Location: 0 B 6}
+\date{21 February 2024, 10:00--13:00}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Chair:}   & Graham Pellegrini \\
+\textbf{Minutes:} & Matthew Mifsud
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+
+\item Reading and approval of minutes from previous meeting.
+
+\item Progress report from group members
+
+\item Finish and fix respective installations.
+
+\item Begin Getting Started Lab
+
+\end{enumerate}
+
+\end{document}

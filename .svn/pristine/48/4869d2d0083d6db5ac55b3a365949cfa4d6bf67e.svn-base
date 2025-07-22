@@ -1,0 +1,37 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Agenda -- Group 5}
+\author{Location: 0 B 6}
+\date{07 March 2024, 12:00 -- 16:00}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Chair:}   & Luca Vella \\
+\textbf{Minutes:} & Graham Pellegrini
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+
+\item Reading and approval of minutes from previous meeting
+
+\item Matters arising from minutes
+
+\item Progress report from group members
+
+\item Reach concensus on what sections of the design brief will be handled by whom.
+
+\item Structure of the design brief.
+
+\item Timetabling due to deadline approaching next week.
+
+\item Other matters
+
+\end{enumerate}
+
+\end{document}

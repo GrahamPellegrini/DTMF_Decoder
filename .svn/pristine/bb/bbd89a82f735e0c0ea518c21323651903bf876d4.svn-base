@@ -1,0 +1,73 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Minutes -- Group 5}
+\author{Location: 0 B 6}
+\date{13 March 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+
+\section*{Present}
+Luca Vella,
+Matthew Mifsud (Chair),
+Julian Falzon
+
+\section*{Apologies}
+Graham Pellegrini
+
+\section*{Absent}
+
+\section*{Discussion}
+
+\begin{enumerate}
+
+\item Minutes from the previous meeting were read and approved.
+
+\item Matters arising out of minutes
+   \begin{enumerate}
+   \item \textbf{4.1}: Luca Vella successfully wrote the management section and added a Gantt Chart.
+   \item \textbf{4.2}: Matthew Mifsud added a UML Diagram, finalized functional requirements and explained realization with ARM MDK, discussed the development model chosen and fixed errors throughout the document.
+   \item \textbf{4.3}: Julian Falzon discussed a flow chart of the system.
+   \item \textbf{4.4}: Graham Pellegrini wrote the abstract and reread it for spelling and errors.
+   \end{enumerate}
+
+\item Progress report from group members
+   \begin{enumerate}
+   \item All members discussed the information within their design brief sections and informed the other members about the contents
+   \end{enumerate}
+
+\item Consensus was reached on how to finalize the initial design brief. The design brief was finalized during the meeting.
+
+\item The role and tasks that the new member (Julian Falzon) will be in charge of were finalized between members and written in the design brief.
+
+\item Discussion on the initial tasks according to the design brief was done about what needs to be completed for the development of the system.
+
+\item Other matters
+   \begin{enumerate}
+   \item None
+   \end{enumerate}
+
+\end{enumerate}
+
+\section*{Actions}
+
+\begin{enumerate}
+
+\item [5.1] Write and fill in the group scaling form for the lab.
+\begin{flushright}
+Assigned to: \textbf{Everyone} \\
+Deadline: \textbf{Next Meeting}
+\end{flushright}
+
+\item [5.2] Begin tasks following the time plan on the design brief.
+\begin{flushright}
+Assigned to: \textbf{Everyone} \\
+Deadline: \textbf{Next Meeting}
+\end{flushright}
+
+\end{enumerate}
+
+\end{document}

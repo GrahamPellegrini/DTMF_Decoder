@@ -1,0 +1,37 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting 1 details
+\title{Meeting Agenda -- Group 5}
+\author{Location: 0 B 6}
+\date{21 February 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Chair:}   & Graham Pellegrini \\
+\textbf{Minutes:} & Matthew Mifsud
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+
+\item Discuss what is to be done in preparation for the next meeting.
+
+\item Decide on the role taken on by each member.
+
+\item Obtain the embedded device required.
+
+\item Decide how communication between members will be carried out.
+
+\item Decide a common slot to be maintained for future meetings.
+
+\item Determine which files and applications are required and commence with their downloads and installations.
+
+\item Attempt to flash a program to the device successfully.
+
+\end{enumerate}
+
+\end{document}

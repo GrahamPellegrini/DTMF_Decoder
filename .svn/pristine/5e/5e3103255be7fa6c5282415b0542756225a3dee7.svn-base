@@ -1,0 +1,70 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Minutes -- Group 5}
+\author{Location: 0 B 6}
+\date{25 April 2024, 10:00 -- 14:00}
+
+\begin{document}
+
+\maketitle
+
+\section*{Present}
+% Members actually present at the meeting
+Luca Vella,
+Matthew Mifsud (Chair),
+Graham Pellegrini
+
+\section*{Absent}
+Julian Falzon
+
+\section*{Discussion}
+
+\begin{enumerate}
+
+   % There should be an item corresponding to each of the agenda items for this
+   % meeting.
+
+   \item Minutes from the previous meeting were read and approved.
+
+   \item Matters arising out of minutes
+         \begin{enumerate}
+            \item [8.1] The Goertzel function was implemented in C however threw random values when tested. The way the buffer is being filled might be the problem.
+            \item [8.2]: The quiet region seemed to be doing the job as expected during decoding.
+            \item [8.3]: Auto-scroll was implemented, however, a minor bug was identified where auto-scroll skips 2 characters.
+         \end{enumerate}
+
+   \item Progress report from group members
+         \begin{enumerate}
+            \item Luca Vella described the progress on the Goertzel function. The implementation of the main was completed amongst members and the function was tested.
+            \item Matthew Mifsud described the progress on the display. Issues with the auto-scroll were discussed.
+            \item Graham Pellegrini showed the translated code of the Goertzel function and discussed the EEPROM driver.
+         \end{enumerate}
+\end{enumerate}
+
+\section*{Actions}
+
+\begin{enumerate}
+
+   \item [9.1] Fixing the identified bug within the auto-scroll feature.
+         \begin{flushright}
+            Assigned to: \textbf{Matthew Mifsud} \\
+            Deadline: \textbf{next meeting}
+         \end{flushright}
+
+   \item [9.2] Fixing the Goertzel function and the random values being thrown.
+         \begin{flushright}
+            Assigned to: \textbf{Luca Vella} \\
+            Deadline: \textbf{next meeting}
+         \end{flushright}
+
+   \item [9.3] Implementing the EEPROM driver with the .h and .c respective files. To allow the flag for the auto-scroll to be stored in the EEPROM.
+         \begin{flushright}
+            Assigned to: \textbf{Graham Pellegrini} \\
+            Deadline: \textbf{next meeting}
+         \end{flushright}
+
+\end{enumerate}
+
+\end{document}

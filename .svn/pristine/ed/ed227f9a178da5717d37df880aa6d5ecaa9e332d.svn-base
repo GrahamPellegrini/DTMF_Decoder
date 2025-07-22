@@ -1,0 +1,252 @@
+#include <platform.h>
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <adc.h>
+#include <delay.h>
+#include <eeprom.h>
+#include <lcd.h>
+#include <leds.h>
+#include <switches.h>
+#include <timer.h>
+
+#include "decode.h"
+
+#define SCREEN_SIZE 16
+#define SAMPLE_RATE 8000
+#define BASELINE    2048
+#define BUFFER_SIZE 256
+
+#define EE_AUTOSCROLL_OFFSET  16
+#define EE_AUTOSCROLL_ADDRESS 16
+
+static float buffer1[BUFFER_SIZE] = { 0 };
+static float buffer2[BUFFER_SIZE] = { 0 };
+static char secondRowOutput[SCREEN_SIZE + 1] = { 0 };
+
+static float* currentBuffer = buffer1;
+static unsigned short currentBufferIndex = 0;
+static unsigned short cursorPosition = 0;
+
+static unsigned char prev_SW_LT = 0;
+static unsigned char prev_SW_DN = 0;
+static unsigned char prev_SW_UP = 0;
+static unsigned char prev_SW_CR = 0;
+static unsigned char prev_SW_RT = 0;
+static unsigned char isBufferFull = 0;
+static unsigned char autoScroll = 0;
+static unsigned char adcValue = 0;
+static unsigned int adcDelay = 0;
+
+void initializeComponents(void);
+void printStartMessage(char* message);
+void startSamplingTimer(void);
+void samplingInterrupt(void);
+void detectSwitchInput(void);
+
+int main(void) {
+  char decodedResult = '\0';
+  char prevdecodedResult = '\0';
+  char str[16] = { 0 };
+
+  initializeComponents();
+  printStartMessage("DTMF Decoder");
+  startSamplingTimer();
+
+  while (1) {
+    __WFI();
+    detectSwitchInput();
+
+    if (!isBufferFull)
+      continue;  // Do nothing till buffer full
+
+    isBufferFull = 0;
+
+    if (adcValue && (adcDelay == 0)) {
+      sprintf(str, "%+0.5f", (currentBuffer[0]));
+      lcd_clear();
+      lcd_print("ADC Value: ");
+      lcd_set_cursor(0, 1);
+      lcd_print(str);
+			adcDelay++;
+      continue;
+    }
+		else if(adcDelay == 25){
+			adcDelay = 0;
+		}
+		else{
+			adcDelay++;
+		}
+
+    prevdecodedResult = decodedResult;
+    decodedResult = decode(currentBuffer, BUFFER_SIZE);
+		
+		if (decodedResult == '!' ) {
+			leds_set(1,0,0);
+			lcd_clear();
+			cursorPosition = 0;
+			lcd_print("Error");
+			delay_ms(1000);
+			lcd_clear();
+			leds_set(0,0,autoScroll);
+      continue;
+    }
+
+    if (decodedResult == '\0' || prevdecodedResult == decodedResult) {
+      continue;
+    }
+
+    // Saving contents of second row in preparation for shifting up LCD.
+    if (cursorPosition >= SCREEN_SIZE) {
+      // Row 1 is filled, switch to row 2.
+      if (cursorPosition == SCREEN_SIZE) {
+        lcd_set_cursor(0, 1);
+      }
+
+      secondRowOutput[cursorPosition - SCREEN_SIZE] = decodedResult;
+    }
+
+    // Shifting up when end of LCD is reached.
+    if (cursorPosition >= SCREEN_SIZE * 2) {
+      if (autoScroll) {
+        lcd_clear();
+        lcd_print(secondRowOutput);
+        lcd_set_cursor(0, 1);
+        cursorPosition = SCREEN_SIZE;
+      } else {
+        lcd_clear();
+        cursorPosition = 0;
+      }
+    }
+
+    // Otherwise we print normally
+    lcd_put_char(decodedResult);
+    cursorPosition++;
+  }
+}
+
+void initializeComponents(void) {
+  adc_init();
+  lcd_init();
+  leds_init();
+  switches_init();
+  eeprom_init();
+  eeprom_read(EE_AUTOSCROLL_OFFSET, EE_AUTOSCROLL_ADDRESS, &autoScroll, 1);
+  leds_set(0, 0, autoScroll);
+}
+
+void printStartMessage(char* message) {
+  lcd_clear();
+  lcd_print(message);
+  delay_ms(1000);
+  lcd_clear();
+}
+
+void startSamplingTimer(void) {
+  timer_init(CLK_FREQ / SAMPLE_RATE);
+  timer_set_callback(&samplingInterrupt);
+  timer_enable();
+}
+
+void samplingInterrupt(void) {
+  volatile const short res = adc_read() - BASELINE;
+  volatile const float vadc = res * (3.3 / ADC_MASK);
+
+  if (currentBufferIndex >= BUFFER_SIZE) {
+    isBufferFull = 1;
+    currentBufferIndex = 0;
+
+    currentBuffer = (currentBuffer == buffer1) ? buffer2 : buffer1;
+  }
+
+  if (currentBuffer == buffer1) {
+    buffer1[currentBufferIndex++] = vadc;
+  } else {
+    buffer2[currentBufferIndex++] = vadc;
+  }
+}
+
+void detectSwitchInput(void) {
+  unsigned char SW_UP, SW_DN, SW_CR, SW_LT, SW_RT;
+
+  SW_UP = switch_get(P_SW_UP);
+  if (!prev_SW_UP && SW_UP) {
+    prev_SW_UP = 1;
+
+    autoScroll = !autoScroll;
+    eeprom_erase(EE_AUTOSCROLL_ADDRESS);
+    eeprom_write(EE_AUTOSCROLL_OFFSET, EE_AUTOSCROLL_ADDRESS, &autoScroll, 1);
+    leds_set(0, 0, autoScroll);
+
+    return;
+  } else if (prev_SW_UP && !SW_UP) {
+    prev_SW_UP = 0;
+
+    return;
+  }
+
+  SW_CR = switch_get(P_SW_CR);
+  if (!prev_SW_CR && SW_CR) {
+    prev_SW_CR = 1;
+
+    leds_set(0, 1, 0);
+    lcd_clear();
+    cursorPosition = 0;
+
+    return;
+  } else if (prev_SW_CR && !SW_CR) {
+    prev_SW_CR = 0;
+
+    leds_set(0, 0, autoScroll);
+
+    return;
+  }
+
+  SW_DN = switch_get(P_SW_DN);
+  if (!prev_SW_DN && SW_DN) {
+    prev_SW_DN = 1;
+
+    lcd_clear();
+    lcd_print("Goodbye");
+    exit(0);
+
+    return;
+  } else if (prev_SW_DN && !SW_DN) {
+    prev_SW_DN = 0;
+
+    return;
+  }
+
+  SW_LT = switch_get(P_SW_LT);
+  if (!prev_SW_LT && SW_LT) {
+    prev_SW_LT = 1;
+
+    adcValue = !adcValue;
+    cursorPosition = 0;
+    leds_set(adcValue, 0, 0);
+
+    return;
+  } else if (prev_SW_LT && !SW_LT) {
+    prev_SW_LT = 0;
+
+    lcd_clear();
+
+    return;
+	}
+	
+  SW_RT = switch_get(P_SW_RT);
+  if (!prev_SW_RT && SW_RT) {
+    prev_SW_RT = 1;
+
+    lcd_clear();
+    lcd_print("Goodbye");
+    exit(0);
+
+    return;
+  } else if (prev_SW_RT && !SW_RT) {
+    prev_SW_RT = 0;
+
+    return;
+  }
+}

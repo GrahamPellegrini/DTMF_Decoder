@@ -1,0 +1,195 @@
+\documentclass{cce2014-design}
+\svnInfo $Id$
+
+% Document details
+\title{Design Brief: Group 5}
+\author{
+   Matthew Mifsud,
+   Luca Vella,
+   Graham Pellegrini,
+   Julian Falzon
+   }
+\date{\svnMaxToday, Document v.\svnInfoMaxRevision}
+
+\begin{document}
+
+\maketitle
+
+\abstract{%
+   Write an executive summary for your project. This should not overflow into
+   the next page, should not contain references, and should be readable by
+   a wide audience.
+   This document presents the design of a Dual-Tone Multi-Frequency decoder using the LPC4088.
+}
+
+\section{Introduction}
+
+
+Dual-tone multi-frequency (DTMF) signaling is a method used in telecommunication systems to transmit digits or symbols over telephone lines.
+Pairs of audio frequencies are used to represent each symbol;
+digits 0-9, letters A-D, and special characters * and \#.
+The pair of frequencies are split into groups of low and high frequencies.
+These signal frequency ranges are set in the audible tones of the voice frequency range.
+Thereby being transmittable through electrical repeaters and amplifiers, and over radio and microwave links, eliminating such need for intermediate operators on long-distance circuits.
+
+\begin{table}[h!]
+   \begin{center}
+      \begin{tabular}{ |c|c|c|c|c| }
+         \hline
+         FreqBand & 1209Hz & 1336Hz & 1477Hz & 1633Hz \\
+         697Hz    & 1      & 2      & 3      & A      \\
+         770Hz    & 4      & 5      & 6      & B      \\
+         852Hz    & 7      & 8      & 9      & C      \\
+         941Hz    & *      & 0      & \#     & D      \\
+         \hline
+      \end{tabular}
+   \end{center}
+   \caption{Frequency mappings}
+   \label{table:frequencies}
+\end{table}
+
+The project assigned aims to build a DTMF decoder around an ARM Cortex‐M4 microcontroller.
+Where the base implementation should be able to take a line‐level audio input of known fixed tone duration, decode this input and display the corresponding result to the external LCD screen at real time.
+
+The design should follow an ordered sequence of execution.
+This documentation seeks to give a high-level view of the design overview. Following the sequence of execution respectively and briefing each step of the design to provide understanding on the holistic approach to the problem.
+
+
+\section{System Design}
+\subsection{Hardware Components}
+Line output to ADC Circuit
+
+
+DTMF audio source will be sent from Laptop using headphone jack line output to ADC. The audio signals used for testing and implementation will be those sourced from VLE as .mp3 files with variation in signal properties.
+However, since line output signals vary nominally between approximately -1V to 1V and the wanted ADC signal to be processed is needed to vary from 0V to Vref  (where Vref is the working voltage from the microcontroller LPC4088) then an intermediate circuit needs to be built.
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.5\textwidth]{ADC_Cirucit.png}
+   \caption{Line output to ADC}
+\end{figure}
+
+
+Let us break the circuit down:
+\begin{itemize}
+   \item The audio line output signal is connected to the ciruit
+   \item This is passed serially through a 100nF capacitor which acts as an open circuit for the DC component of the signal. Thereby, allowing only the AC component of the signal to pass.
+   \item A serial 100-ohm resistor is used to simply limit circuit current.
+   \item At the first junction a voltage divider containing two 10K-ohm resistors is used. Halving the input voltage range spanning from Vref to ground and placing the singal with in a suitable ADC range.
+   \item A parallel second junction to the voltage divider of two respective 1N4148 diodes is used to protect the circuit from overvoltage (falling outside the ADC range). If one input exceeds the ADC range then the opposite polar diode will begin to conduct and negate the excess voltage.
+   \item Finally an ADC appropriate signal has been achieved from the original line output.
+\end{itemize}
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.4\textwidth]{LinetoADC.png}
+   \caption{Line and ADC signals}
+\end{figure}
+
+
+The circuit described serves as an input conditioning stage for the audio signal before it enters the WM8731 codec. The ADC in the WM8731 converts the analogue audio signal into digital format, which can then be processed digitally by a microcontroller. The values produced by the on board Codec can be directly read through the memory-mapped I/O on the LPC4088 microcontroller board.
+
+
+Output/Feedback Components
+
+
+In the system output is generated through a Hitachi HD44780-based 16x2 LCD, interfaced using the general purpose input/output (GPIO) for data signals, control signals, and power connections. Lastly, user interaction is facilitated by a switch which is used for controlling system settings and clearing the LCD as well as two LEDs which provide feedback about the system status. \\
+
+\subsection{Interrupt-Driven Sampling}
+
+The system will make use of a timer to generate interrupts at a frequency of at least 3266Hz and each interrupt will trigger the ADC to capture a sample of the input signal. The sample rate was chosen based on the Nyquist theorem, which states that the rate should be at least twice the frequency of the signal, for accurate measurement. \\
+
+\subsection{Buffer store}
+
+Each captured sample is immediately stored in a circular buffer on the system's RAM which overwrites the oldest data once full capacity has been reached.
+
+\subsection{Functional Requirements}
+\begin{description}
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} Solution must be real-time; reacting to one or more inputs that can change at any time.\vspace{2mm}}] \underline{Description:} The system will constantly read input signals, allow the user to clear display and set configurations using a switch.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} System must make use of at least one digital input.\vspace{2mm}}] \underline{Description:} The system will contain a switch with multiple functionalities. A long press clears the LCD display, thus resetting it for a new input sequence and toggle up, enables automatic scrolling.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} System must make use of at least one digital output.\vspace{2mm}}] \underline{Description:} The system will make use of two LEDs (1 red and 1 green) to provide immediate visual feedback of the system status. Under normal and safe operation, the green LED emits light. Upon detection of any error (such as decoding failure) the red LED will instead emit light.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} System must connect to at least one external peripheral.\vspace{2mm}}] \underline{Description:} A Hitachi HD44780-based 16x2 LCD display will be used to output the decoded result.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} On power up or reset, system should enter a well‐defined safe state.\vspace{2mm}}] \underline{Description:} The aim is that the system will be designed to only respond to valid inputs, thus never entering an undefined state.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} System must persistently store configuration settings, independent of the position of physical switches.\vspace{2mm}}] \underline{Description:} In order to keep track of the configurations set by the user either flash memory or an EEPROM will be used. This is because non-volatile memory is required.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} System shall have a useful and appropriate mechanism for indicating error conditions to the user.\vspace{2mm}}] \underline{Description:} As mentioned prior, a red LED will be used to indicate that the system has encountered an error.
+   \item[\parbox{0.5\textwidth}{\underline{Requirement:} System should be robust (incorrect input is handled)\vspace{2mm}}] \underline{Description:} In the event of incorrect input, the system will ignore the input without performing any action, ensuring that it remains in a stable and expected state.
+
+\end{description}
+
+\subsection{Steps required for decoding a signal}
+\begin{enumerate}
+   \item Analogue-to-digital conversion: Continuous analogue signals are sampled using the ADC and stored in the RAM buffer.
+   \item Noise reduction using convolution filtering: In order to enhance signal a filter is applied such that only frequencies within the DTMF range are allowed.
+   \item Tone validation: To ensure that the detected signals are indeed valid DTMF tones and not accidental noises, timers are employed to track duration of tones and silence intervals between them.
+   \item Breaking up the frequency: In order to identify the two frequencies making up the signal, either the Goertzel algorithm or the Fast Fourier Transform will be used. This is because of their efficient and accurate detection of the tone pairs.
+   \item Map frequencies to digits: Once a pair of frequencies has been obtained, they are matched to the corresponding result using a lookup table stored in flash memory since only reading is required. Example, the frequency pair 697 Hz and 1209 Hz corresponds to the digit '1'.
+   \item Output Display: The decoded result is then sent directly to the display module from the buffer such that it is displayed to the user in real-time.
+\end{enumerate}
+
+\section{Management}
+
+We believe that there are 8 tasks which we should focus our attention on. These tasks can be seen in the legend on the left hand side of the Gantt Chart figure (Fig \ref*{figure:ganttChart}).
+
+\begin{figure}[h!]
+   \centering
+   \includegraphics[width=0.5\textwidth]{GanttChart.png}
+   \caption{Gantt Chart showing our proposed time plan}
+   \label{figure:ganttChart}
+\end{figure}
+
+We have already allocated who is responsible for each task among ourselves. Below is a breakdown of our assignments:
+
+\begin{enumerate}
+   \item Graham
+         \begin{itemize}
+            \item 1. External Audio Input Circuit
+            \item 3. Signal Cleaning
+            \item Secondary on 4. DTMF Decoding Algorithm
+         \end{itemize}
+   \item Luca
+         \begin{itemize}
+            \item 2. ADC Sampling
+            \item 5. Mapping to Characters
+            \item Secondary on 6. Display to Screen
+         \end{itemize}
+   \item Matthew
+         \begin{itemize}
+            \item Primary on 6. Display to Screen
+         \end{itemize}
+   \item Julian
+         \begin{itemize}
+            \item Primary on 4. DTMF Decoding Algorithm
+         \end{itemize}
+\end{enumerate}
+
+Of note, tasks 7 and 8 are general task.
+Task 7 will cover implementing any extra features that are not cruical to the functionality of the DTMF decoder.
+Whilst task 8 is optimisation and refactoring of the code.
+Thus, there is no particular assignment for each of them as of now.
+
+It is of note that the tasks in the chart were chosen to have a one week deadline or three week deadline depending on the complexity of the task.
+
+The period for the task begins on the day of the meeting, which is Wednesday in our case, and extends until the meeting occurs in its designated deadline week.
+
+The tasks in the chart are staggered such that they depend on the tasks above them before they can be done. For example, task 2 depends on task 1 to be able to read an input.
+
+\section{Closure}
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+
+Make sure to mention the process that will be done on each individual sample "block",
+where you talk about after what amount of time will you handle proccessing and what is the processing of a block.
+
+ADC will collect only one sample, make sure to tell the ADC to sample after a given period using something like a interrupt from a timer.
+
+In general the sample of a signal will be twice or more the frequeny.
+
+Talk about how you will handle the system in real time.
+Mentioning how to you have to seperate a thread to handle the saving and getting of the data from the ADC ( Analog digital converter ), and a "concurrent" thread to handle the processing of an already in store memory block.
+
+We may include images in the system design the explain the workflow and data flow and control flow of the system.
+
+
+\end{document}

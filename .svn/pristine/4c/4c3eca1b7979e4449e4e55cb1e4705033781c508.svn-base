@@ -1,0 +1,86 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Minutes -- Group 5}
+\author{Location: 0 B 6}
+\date{28 February 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+
+\section*{Present}
+% Members actually present at the meeting
+Luca Vella,
+Matthew Mifsud (Chair),
+
+\section*{Apologies}
+Graham Pellegrini
+
+\section*{Absent}
+
+\section*{Discussion}
+
+\begin{enumerate}
+
+\item Minutes from the previous meeting were read and approved.
+
+\item Matters arising out of minutes.
+   \begin{enumerate}
+      \item \textbf{2.1}: Handbook was read by eveyone.
+      \item \textbf{2.2}:
+      \begin{enumerate}
+         \item Matthew took the embedded device home to practice the first couple of labs.
+         \item Luca was assigned to read further the ARM documentation regarding the microcontroller.
+         \item Graham was exempt due to personal obligations.
+      \end{enumerate}
+      \item \textbf{2.3}: Embedded device was picked up and given to Matthew.
+      \item \textbf{2.4}: Messenger chat was created to facilitate communication.
+      \item \textbf{2.5}: Wednesday was designated to be the primary meeting slot.
+      \item \textbf{2.6}: Everyone succesffuly installed all technologies on their machines.
+      \item \textbf{2.7}: Eveyone succesffuly flashed lab 1 program to embedded device.
+   \end{enumerate}
+
+\item Information was shared between memebers.
+   \begin{enumerate}
+   \item Matthew described how he managed to print "Hello World!" to the screen.
+   \item Luca described the process of how the microcontroller handles the registers and functions.
+   \end{enumerate}
+
+\item Discussion and research on possible designs for DTMF.
+   \begin{enumerate}
+      \item a
+   \end{enumerate}
+\item a% Difficulty assesment of possible designs
+
+\item a% Simple draft point
+
+\item Other matters
+   \begin{enumerate}
+   \item First item discussed that was not on the agenda
+   \end{enumerate}
+
+\end{enumerate}
+
+\section*{Actions}
+
+\begin{enumerate}
+
+\item Description of first action to be completed
+\begin{flushright}
+Assigned to: \textbf{Sean Connery} \\
+Deadline: \textbf{ASAP}
+\end{flushright}
+
+\item Description of second action to be completed
+\begin{flushright}
+Assigned to: \textbf{Kevin Costner} \\
+Deadline: \textbf{next meeting}
+\end{flushright}
+
+% Add more actions as necessary
+
+\end{enumerate}
+
+\end{document}

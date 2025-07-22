@@ -1,0 +1,35 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Agenda -- Group 5}
+\author{Location: 0 B 6}
+\date{20 March 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+    \begin{tabular}{ll}
+        \textbf{Chair:}   & Luca Vella     \\
+        \textbf{Minutes:} & Matthew Mifsud
+    \end{tabular}
+\end{center}
+
+\begin{enumerate}
+    \item Reading and approval of minutes from previous meeting
+
+    \item Matters arising from minutes
+
+    \item Progress report from group members
+
+    \item Discussion on online meeting dates for weeks during the easter holidays
+
+    \item Agree between members who will take the board for the easter hoidays.
+
+    \item Agree on deadlines for subparts/tasks required to be completed, to streamline individual work.
+
+    \item Other matters
+\end{enumerate}
+
+\end{document}

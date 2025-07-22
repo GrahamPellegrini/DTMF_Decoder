@@ -1,0 +1,39 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id$
+
+% Meeting details
+\title{Meeting Agenda -- Group 5}
+\author{Online Meeting}
+\date{10 April 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+\begin{center}
+\begin{tabular}{ll}
+\textbf{Chair:}   & Graham Pellegrini \\
+\textbf{Minutes:} & Matthew Mifsud
+\end{tabular}
+\end{center}
+
+\begin{enumerate}
+
+\item Reading and approval of minutes from previous meeting
+
+\item Matters arising from minutes
+
+\item Progress report from group members
+
+\item Discussion on the implementation of the first class required, which will handle ADC sampling.
+
+\item Discuss any gaps in knowledge of how to begin implementation
+
+\item Agree on the class implementation schedule
+
+% Add other items here as necessary
+
+\item Other matters
+
+\end{enumerate}
+
+\end{document}

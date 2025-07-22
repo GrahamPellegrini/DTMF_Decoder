@@ -1,0 +1,76 @@
+\documentclass{article}
+
+% Document details
+\title{Design Brief: Group 1}
+\author{
+   Matthew Mifsud,
+   Luca Vella,
+   Graham Pellegrini,
+   Julian Falzon
+   }
+\date{\svnMaxToday, Document v.\svnInfoMaxRevision}
+
+\begin{document}
+
+\maketitle
+
+\abstract{%
+   Write an executive summary for your project. This should not overflow into
+   the next page, should not contain references, and should be readable by
+   a wide audience.
+   }
+
+\section{Introduction}
+Write an introduction, explaining the purpose and background of this project.
+Give a brief description of the game to be implemented.
+References to be cited like so \cite{stroustrup2000}.
+Also include an overview of this document.
+
+\section{System Design}
+Make sure to mention the process that will be done on each individual sample "block",
+where you talk about after what amount of time will you handle proccessing and what is the processing of a block.
+
+ADC will collect only one sample, make sure to tell the ADC to sample after a given period using something like a interrupt from a timer.
+
+In general the sample of a signal will be twice or more the frequeny.
+
+Talk about how you will handle the system in real time.
+Mentioning how to you have to seperate a thread to handle the saving and getting of the data from the ADC ( Analog digital converter ), and a "concurrent" thread to handle the processing of an already in store memory block.
+
+We may include images in the system design the explain the workflow and data flow and control flow of the system.
+\\
+\\
+Circuit Required to input inside ADC (VREF):
+\begin{itemize}
+	\item Audio source with Analogue Signal
+    \item 100 NanoFarad Capacitor, acting as a coupling capacitor to block any DC offset in the audio signal. This allows the audio signal to pass through while blocking DC, thus preventing any DC bias voltage from affecting other circuitry.
+    \item 100 Ohm Resistor, to provide a small amount of impedance matching, as well as limiting current to protect components.
+    \item Two 10k Ohm Resistors, these resistors form a voltage divider used to bias the input of the ADC to a specific voltage. This biasing is necessary because audio signals are AC (swing positive and negative) whilst ADC input expects a signal in positive DC bias.
+    \item 2 Diodes, oriented to conduct when the voltage exceeds the forward conduction threshhold, one for positive excursions and the other for negative excursions, relative to the bias voltage.
+    \item Reference voltage (Vref) against which input signal is measured.
+    \item Ground (0V), negative terminal of PSU.
+\end{itemize}
+\\
+\\
+\section{Snapshot of processing a frequency}
+\begin{enumerate}
+   \item Perform Analog-to-Digital Conversion (ADC). Samples the continuous analogue signal at regular intervals and converts these samples into a digital representation. Store samples in ram buffer.
+   \item If necessary, normalize signal strength to ensure consistency?
+   \item Filtering using Convolution (Noise Reduction). Applying filters that only allow frequencies within the DTMF range.
+   \item Ensure that the detected signals are indeed valid DTMF tones and not accidental noises. Using timers to track duration of tones and intervals between them. Tone must exist for a minimum duration.After a tone a brief period of silence should follow.
+   \item Frequency Analysis using Fourier Transform. Used to break down the signal into its constituent frequencies. (Discrete Fourier Transform or Fast Fourier Transform)
+   \item Map Frequencies to Digits example, the frequency pair 697 Hz and 1209 Hz corresponds to the digit '1'. Mapping can be done using a lookup table stored in flash memory (since read-only).
+   \item Output Display: Decoded Number. Decoded digit can be sent directly to display module from buffer.
+\end{enumerate}
+
+\section{Management}
+Include a time plan.
+Show task dependencies.
+How are these going to be managed?
+
+\section{Closure}
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,54 @@
+\documentclass{cce2014-design}
+\svnInfo $Id$
+
+% Document details
+\title{Design Brief: Group 1}
+\author{
+   Kevin Costner,
+   Sean Connery,
+   Charles Martin Smith,
+   Andy Garcia,
+   Richard Bradford
+   }
+\date{\svnMaxToday, Document v.\svnInfoMaxRevision}
+
+\begin{document}
+
+\maketitle
+
+\abstract{%
+   Write an executive summary for your project. This should not overflow into
+   the next page, should not contain references, and should be readable by
+   a wide audience.
+   }
+
+\section{Introduction}
+Write an introduction, explaining the purpose and background of this project.
+Give a brief description of the game to be implemented.
+References to be cited like so \cite{stroustrup2000}.
+Also include an overview of this document.
+
+\section{System Design}
+Make sure to mention the process that will be done on each individual sample "block",
+where you talk about after what amount of time will you handle proccessing and what is the processing of a block.
+
+ADC will collect only one sample, make sure to tell the ADC to sample after a given period using something like a interrupt from a timer.
+
+In general the sample of a signal will be twice or more the frequeny.
+
+Talk about how you will handle the system in real time.
+Mentioning how to you have to seperate a thread to handle the saving and getting of the data from the ADC ( Analog digital converter ), and a "concurrent" thread to handle the processing of an already in store memory block.
+
+We may include images in the system design the explain the workflow and data flow and control flow of the system.
+
+\section{Management}
+Include a time plan.
+Show task dependencies.
+How are these going to be managed?
+
+\section{Closure}
+
+\bibliographystyle{ieeetr}
+\bibliography{references}
+
+\end{document}
