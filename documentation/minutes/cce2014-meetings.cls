@@ -1,0 +1,1 @@
+../common/cce2014-meetings.cls

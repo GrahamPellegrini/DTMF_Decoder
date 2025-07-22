@@ -1,0 +1,85 @@
+\documentclass{cce2014-meetings}
+\svnInfo $Id: minutes_week07.tex 8150 2024-04-17 08:44:24Z mmif0142 $
+
+% Meeting details
+\title{Meeting Minutes -- Group 5}
+\author{Online Meeting}
+\date{10 April 2024, 10:00 -- 13:00}
+
+\begin{document}
+
+\maketitle
+
+\section*{Present}
+% Members actually present at the meeting
+Luca Vella,
+Matthew Mifsud (Chair),
+Graham Pellegrini,
+Julian Falzon
+
+\section*{Discussion}
+
+\begin{enumerate}
+
+% There should be an item corresponding to each of the agenda items for this
+% meeting.
+
+\item Minutes from the previous meeting were read and approved.
+
+\item Matters arising out of minutes
+   \begin{enumerate}
+   \item [6.1] Each member finalized their corresponding task:
+      \begin{itemize}
+         \item \textbf{Matthew Mifsud} finalized the code required for switch operation.
+         \item \textbf{Graham Pellegrini} completed the circuit required to shift a wave up (eliminating negative values).
+         \item \textbf{Luca Vella} finalized a plan of how to process (decode) the sampled data and created a prototype.
+         \item \textbf{Julian Falzon} presented his research on the chosen decoding algorithm, to assist Luca Vella.
+      \end{itemize}
+   \item [6.2] The individual tasks assigned to each member were designed in a way that they would integrate with each other and the rest of the system. For example; Graham Pellegrini's circuit was created to integrate with pin 15 of the microcontroller. Luca Vella's prototype for the decoding algorithm was created to receive input from the output of the sampling code (being finalized by Matthew Mifsud). Lastly, Matthew Mifsud's switch operation code was made to output data in a defined format to be used by other sections of the code such as the LCD.
+   \item [6.3] The next necessary task to be completed by each member was initiated following the Gantt chart.
+   \end{enumerate}
+
+   \item Progress report from group members
+   \begin{enumerate}
+      \item Matthew Mifsud discussed and presented the code for operating the switch on the board. Apart from this, the initiated ADC sampling code was also showcased to the group members while running on the embedded device.
+      \item Luca Vella discussed and presented his code for the decoding prototype. Apart from this, the initiated LED operation code was also showcased and discussed.
+      \item Graham Pellegrini presented and explained the circuit built. Apart from this an initial attempt at persisting data to memory was also presented.
+      \item Julian Falzon discussed and presented attempts at possible ways in which the finalized decoding process will work. 
+   \end{enumerate}
+
+\item The implementation schedule agreed upon was followed.
+
+\item Other matters
+   \begin{enumerate}
+   \item Slight adjustments to roles were made. This was a possibility that was considered, especially since group members were expected to assist with tasks not directly assigned to them. For example; Matthew Mifsud was re-assigned ADC Sampling as a primary task, Luca Vella was re-assigned the Decoding Algorithm as a primary task and Graham Pellegrini was assigned to take care of persisting data to memory.
+   \end{enumerate}
+
+\end{enumerate}
+
+\section*{Actions}
+
+\begin{enumerate}
+
+\item [7.1] Finalize currently initiated tasks.
+\begin{flushright}
+Assigned to: \textbf{Everyone} \\
+Deadline: \textbf{Next meeting}
+\end{flushright}
+
+\item [7.2] Continue with the next necessary task to be completed.
+\begin{flushright}
+Assigned to: \textbf{Everyone} \\
+Deadline: \textbf{Next meeting}
+\end{flushright}
+
+\item [7.3] Document progress and updates for the project's design brief.
+\begin{flushright}
+Assigned to: \textbf{Everyone} \\
+Deadline: \textbf{Next meeting}
+\end{flushright}
+
+% Add more actions as necessary
+
+\end{enumerate}
+
+\end{document}
