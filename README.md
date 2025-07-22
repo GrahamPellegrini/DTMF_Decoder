@@ -137,11 +137,7 @@ DTMF_Decoder/
 
 ## 🔒 License
 
-This was a **collaborative group project** developed by:
-> - Graham Pellegrini  
-> - Luca Vella  
-> - Julian Falzon  
-> - Matthew Mifsud  
+This was a **collaborative group project**.
 
 This project is shared under a **custom license agreement**. From the side of Graham Pellegrini, reuse is permitted **only if**:
 
@@ -154,7 +150,7 @@ Refer to the [`LICENSE`](LICENSE) file for the full statement.
 
 ## 📬 Contact
 
-- Graham Pellegrini — graham.pellegrini@um.edu.mt
-- Luca Vella — Luca.Vella.22@um.edu.mt
-- Julian Falzon — julian.a.falzon.19@um.edu.mt
-- Matthew Mifsud — matthew.mifsud.22@um.edu.mt
+> - Graham Pellegrini — graham.pellegrini@um.edu.mt
+> - Luca Vella — Luca.Vella.22@um.edu.mt
+> - Julian Falzon — julian.a.falzon.19@um.edu.mt
+> - Matthew Mifsud — matthew.mifsud.22@um.edu.mt
