@@ -22,7 +22,7 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 
 ---
 
-## ⚙System Features
+## System Features
 
 - Real-time audio signal capture and tone detection via **ADC**
 - Decoding of DTMF signals using **Goertzel algorithm**
@@ -44,7 +44,7 @@ Developed for the **Microcontroller Based Systems** study-unit ([CCE2014](https:
 - Robust operation across varied tone quality
 - Persistent configuration via EEPROM
 
-### 🛠Implementation Details
+### Implementation Details
 - Written in **C/C++** and compiled with **ARM MDK (Keil µVision)**
 - Modular source split into `drivers`, `include`, and `src` folders
 - LCD handled using custom `lcd.c` driver
